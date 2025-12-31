@@ -32,7 +32,31 @@ const config = {
     timeout: 10000
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY
+    apiKey: {
+      "base-sepolia": process.env.BASESCAN_API_KEY || process.env.ETHERSCAN_API_KEY || "",
+      sepolia: process.env.ETHERSCAN_API_KEY || ""
+    },
+    customChains: [
+      {
+        network: "base-sepolia",
+        chainId: 84532,
+        urls: {
+          apiURL: "https://api.etherscan.io/v2/api?chainid=84532",
+          browserURL: "https://sepolia.basescan.org"
+        }
+      },
+      {
+        network: "sepolia",
+        chainId: 11155111,
+        urls: {
+          apiURL: "https://api.etherscan.io/v2/api?chainid=11155111",
+          browserURL: "https://sepolia.etherscan.io"
+        }
+      }
+    ]
+  },
+  sourcify: {
+    enabled: false
   }
 };
 
@@ -41,6 +65,22 @@ if (process.env.SECRET_KEY && process.env.INFURA_ID) {
   config.networks.sepolia = {
     url: `https://sepolia.infura.io/v3/${process.env.INFURA_ID}`,
     accounts: [process.env.SECRET_KEY]
+  };
+}
+
+// Base Sepoliaネットワークの設定
+if (process.env.INFURA_ID) {
+  config.networks["base-sepolia"] = {
+    url: `https://base-sepolia.infura.io/v3/${process.env.INFURA_ID}`,
+    accounts: [process.env.SECRET_KEY],
+    chainId: 84532
+  };
+}
+else {
+  config.networks["base-sepolia"] = {
+    url: "https://sepolia.base.org",
+    accounts: [process.env.SECRET_KEY],
+    chainId: 84532
   };
 }
 

@@ -6,7 +6,7 @@ async function main() {
   console.log("Deploying USDC with the account:", deployer.address);
   
   const usdcInitialSupply = ethers.parseUnits("1000000", 6);
-  const jpytInitialSupply = ethers.parseEther("150000000", 6);
+  const jpytInitialSupply = ethers.parseUnits("150000000", 6);
   
   const CreateToken = await ethers.getContractFactory("Stablecoin");
   
